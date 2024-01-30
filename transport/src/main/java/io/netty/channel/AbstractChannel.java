@@ -461,6 +461,11 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
             return remoteAddress0();
         }
 
+        /**
+         *
+         * @param eventLoop 针对ServerBootStrap 是BossGroup中的NioEventLoop
+         * @param promise
+         */
         @Override
         public final void register(EventLoop eventLoop, final ChannelPromise promise) {
             ObjectUtil.checkNotNull(eventLoop, "eventLoop");
@@ -505,14 +510,17 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                     return;
                 }
                 boolean firstRegistration = neverRegistered;
+                //完成channel向Selector的注册 此时ops为0 不对任何事件产生反应
                 doRegister();
                 neverRegistered = false;
                 registered = true;
 
                 // Ensure we call handlerAdded(...) before we actually notify the promise. This is needed as the
                 // user may already fire events through the pipeline in the ChannelFutureListener.
+                //先执行所有的PendingHandlerCallback
                 pipeline.invokeHandlerAddedIfNeeded();
 
+                //调用Listener
                 safeSetSuccess(promise);
                 pipeline.fireChannelRegistered();
                 // Only fire a channelActive if the channel has never been registered. This prevents firing
@@ -566,7 +574,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 return;
             }
 
-            if (!wasActive && isActive()) {
+            if (!wasActive && isActive()) {//如果是通过doBind绑定了
                 invokeLater(new Runnable() {
                     @Override
                     public void run() {

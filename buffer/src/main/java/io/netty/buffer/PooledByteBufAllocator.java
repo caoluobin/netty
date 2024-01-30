@@ -107,7 +107,7 @@ public class PooledByteBufAllocator extends AbstractByteBufAllocator implements 
                         "io.netty.allocator.numHeapArenas",
                         (int) Math.min(
                                 defaultMinNumArena,
-                                runtime.maxMemory() / defaultChunkSize / 2 / 3)));
+                                runtime.maxMemory() / defaultChunkSize / 2 / 3)));//ChunkSize个数 2：不超过50%  3:经验值
         DEFAULT_NUM_DIRECT_ARENA = Math.max(0,
                 SystemPropertyUtil.getInt(
                         "io.netty.allocator.numDirectArenas",

@@ -80,7 +80,7 @@ public final class UnpooledByteBufAllocator extends AbstractByteBufAllocator imp
     @Override
     protected ByteBuf newHeapBuffer(int initialCapacity, int maxCapacity) {
         return PlatformDependent.hasUnsafe() ?
-                new InstrumentedUnpooledUnsafeHeapByteBuf(this, initialCapacity, maxCapacity) :
+                new InstrumentedUnpooledUnsafeHeapByteBuf(this, initialCapacity, maxCapacity) ://分配阶段两个一样
                 new InstrumentedUnpooledHeapByteBuf(this, initialCapacity, maxCapacity);
     }
 

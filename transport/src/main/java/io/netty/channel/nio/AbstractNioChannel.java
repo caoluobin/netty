@@ -79,7 +79,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     protected AbstractNioChannel(Channel parent, SelectableChannel ch, int readInterestOp) {
         super(parent);
         this.ch = ch;
-        this.readInterestOp = readInterestOp;
+        this.readInterestOp = readInterestOp;//1
         try {
             ch.configureBlocking(false);
         } catch (IOException e) {
@@ -377,6 +377,8 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         boolean selected = false;
         for (;;) {
             try {
+                //在 Netty 中，0 表示不对任何操作感兴趣。这意味着，在这个注册过程中，Channel 不会关注任何读、写、连接或接受的事件。
+                // 通常，这种情况会在初始化 Channel 的时候使用，表示在注册之初不关注任何事件，之后根据具体的业务逻辑动态地调整感兴趣的事件
                 selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
                 return;
             } catch (CancelledKeyException e) {

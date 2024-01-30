@@ -54,6 +54,7 @@ public final class ThreadExecutorMap {
         return new Executor() {
             @Override
             public void execute(final Runnable command) {
+                //executor每次新起一个线程
                 executor.execute(apply(command, eventExecutor));
             }
         };

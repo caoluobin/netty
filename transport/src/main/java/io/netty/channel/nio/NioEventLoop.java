@@ -575,7 +575,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                                 selectCnt - 1, selector);
                     }
                     selectCnt = 0;
-                } else if (unexpectedSelectorWakeup(selectCnt)) { // Unexpected wakeup (unusual case)
+                } else if (unexpectedSelectorWakeup(selectCnt)) { // Unexpected wakeup (unusual case) 重新创建Selector解决空转问题
                     selectCnt = 0;
                 }
             } catch (CancelledKeyException e) {

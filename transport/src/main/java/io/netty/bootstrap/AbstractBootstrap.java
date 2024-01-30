@@ -308,6 +308,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         Channel channel = null;
         try {
             channel = channelFactory.newChannel();
+            //初始化设置options
+            //pipeline添加ChannelInitializer
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {
